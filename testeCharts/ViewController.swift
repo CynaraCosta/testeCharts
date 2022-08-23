@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
-        //createChart()
+        createChart()
         //createSwiftChart()
     }
     
@@ -49,20 +49,49 @@ class ViewController: UIViewController {
     private func createChart(){
         // Create bar chart
         let barChart = BarChartView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.width ))
+        barChart.doubleTapToZoomEnabled = false
+        barChart.pinchZoomEnabled = false
+        barChart.drawBarShadowEnabled = false
+        barChart.drawGridBackgroundEnabled = false
+        barChart.drawBordersEnabled = false
+        barChart.borderColor = .label
+        barChart.animate(yAxisDuration: 0.5 , easingOption: .linear)
+
         
         // Configure the axis
         let xAxis = barChart.xAxis
         let rightAxis = barChart.rightAxis
+        rightAxis.enabled = false
         
         // Configure legend
         let legend = barChart.legend
         
         // Supply data
         var entries = [BarChartDataEntry]()
-        let names = ["Janeiro", "Fevereiro", "Março"]
+        let names = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+        xAxis.valueFormatter = IndexAxisValueFormatter(values: names)
+        xAxis.labelRotationAngle = -25
+        xAxis.labelPosition = .bottom
+        xAxis.drawAxisLineEnabled = true
+        xAxis.drawGridLinesEnabled = false
+        xAxis.setLabelCount(rawData.count, force: false)
+        xAxis.granularityEnabled = false
+        xAxis.axisMaximum = Double(rawData.count)
+
+        
+        let leftAxis = barChart.leftAxis
+        leftAxis.drawTopYLabelEntryEnabled = true
+        leftAxis.drawAxisLineEnabled = true
+        leftAxis.drawGridLinesEnabled = true
+        leftAxis.granularityEnabled = false
+
+        // setar leftaxis pra numero limitado e qual numero em questao, acho que fazer um max e min dos valores funciona
+        leftAxis.setLabelCount(names.count, force: true)
+        // leftAxis.axisMinimum = rawData[]
+        // leftAxis.axisMaximum = 2.5
         
         for x in 0..<names.count {
-            entries.append(BarChartDataEntry(x: Double(x), y: Double.random(in: 0...10)))
+            entries.append(BarChartDataEntry(x: Double(x), y: Double(rawData[x].1)))
         }
         
         let set = BarChartDataSet(entries: entries, label: "Meses")
@@ -74,6 +103,7 @@ class ViewController: UIViewController {
         view.addSubview(barChart)
         barChart.center = view.center
     }
+
 
 }
 
