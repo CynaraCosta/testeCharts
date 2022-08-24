@@ -56,6 +56,7 @@ class ViewController: UIViewController {
         barChart.drawBordersEnabled = false
         barChart.borderColor = .label
         barChart.animate(yAxisDuration: 0.5 , easingOption: .linear)
+        barChart.highlightPerTapEnabled = false
 
         
         // Configure the axis
@@ -78,15 +79,15 @@ class ViewController: UIViewController {
         xAxis.granularityEnabled = false
         xAxis.axisMaximum = Double(rawData.count)
 
-        
-        let leftAxis = barChart.leftAxis
-        leftAxis.drawTopYLabelEntryEnabled = true
-        leftAxis.drawAxisLineEnabled = true
-        leftAxis.drawGridLinesEnabled = true
-        leftAxis.granularityEnabled = false
+        barChart.leftAxis.enabled = false
+        //let leftAxis = barChart.leftAxis
+        //leftAxis.drawTopYLabelEntryEnabled = true
+        //leftAxis.drawAxisLineEnabled = true
+        //leftAxis.drawGridLinesEnabled = true
+        //leftAxis.granularityEnabled = false
 
         // setar leftaxis pra numero limitado e qual numero em questao, acho que fazer um max e min dos valores funciona
-        leftAxis.setLabelCount(names.count, force: true)
+        //leftAxis.setLabelCount(names.count, force: true)
         // leftAxis.axisMinimum = rawData[]
         // leftAxis.axisMaximum = 2.5
         
@@ -95,10 +96,12 @@ class ViewController: UIViewController {
         }
         
         let set = BarChartDataSet(entries: entries, label: "Meses")
-        set.colors = ChartColorTemplates.pastel()
+        set.setColor(UIColor.red)
+        //set.colors = ChartColorTemplates.pastel()
         let data = BarChartData(dataSet: set)
         
         barChart.data = data
+        barChart.legend.enabled = false
         
         view.addSubview(barChart)
         barChart.center = view.center
